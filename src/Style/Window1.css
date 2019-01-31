@@ -1,0 +1,28 @@
+grid button {
+    background-color: #424851;
+    color: #ffffff;
+    font-family: 'Daniel';
+    font-size: 40px;
+    border-width: 4px;
+}
+
+grid button:hover {
+    background-color: #ffffff;
+    color: #424851;
+}
+
+
+button#bot {
+    background-color: #ea0707;
+    color: #ffffff;
+}
+
+button#user {
+    background-color: #2039db;
+    color: #ffffff;
+}
+
+window {
+    background-color: #68708f;
+    
+}
