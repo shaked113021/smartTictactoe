@@ -3,7 +3,6 @@
 #include "Bot.h"
 
 
-
 class Window1 {
     private:
         Bot *gameBot;
@@ -11,6 +10,7 @@ class Window1 {
         GtkWidget *window;
         GtkWidget *grid;
         GtkApplication *app;
+        char *execpath;
         void addButtons();
         void findXY(GtkWidget *button, int &x, int &y);
         void updateButtons();

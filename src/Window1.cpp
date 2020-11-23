@@ -1,9 +1,14 @@
 #include "Headers/Window1.h"
+#include "Headers/findpath.h"
+#include <string>
+#include <cstring>
 #define N 3
 const int WINEDGE = 600;
 
 void Window1::activateWindow()
 {
+    char stylepath[80];
+    sprintf(stylepath, "%s/../Style/Window1.css", execpath);
     window = gtk_application_window_new (app);
     gtk_window_set_default_size (GTK_WINDOW (window), WINEDGE, WINEDGE);
     gtk_window_set_title (GTK_WINDOW (window), "Tictactoe");
@@ -18,7 +23,7 @@ void Window1::activateWindow()
     addButtons();
     GdkScreen *screen = gdk_screen_get_default();
     GtkCssProvider *provider = gtk_css_provider_new();
-    gboolean ret = gtk_css_provider_load_from_path (provider, "src/Style/Window1.css",NULL);
+    gboolean ret = gtk_css_provider_load_from_path (provider, stylepath,NULL);
     if(ret==FALSE)
     {
         perror("Failed to load css\n");
@@ -167,11 +172,12 @@ static void activate(GtkApplication *Napp, Window1 &data)
 }
 
 Window1::Window1(int argc, char **argv)
-{
-
-    
+{   
     gameBot = new Bot;
     board = new Board;
+    std::string execpathstr = findpath();
+    execpath = new char[execpathstr.size() + 1];
+    strcpy(execpath, execpathstr.c_str());
 
     app = gtk_application_new ("shakedcohen.tictactoe", G_APPLICATION_FLAGS_NONE);
     g_signal_connect (app, "activate", G_CALLBACK (activate), this);
@@ -206,6 +212,7 @@ Window1::~Window1()
 {
     delete gameBot;
     delete board;
+    delete execpath;
 }
 
 
