@@ -11,7 +11,7 @@ void Window1::ActivateWindow() {
   sprintf(stylepath, "%s/../Style/Window1.css", exec_path_);
   
   // make window
-  window_ = gtk_application_window_new (this->app_);
+  this->window_ = gtk_application_window_new (this->app_);
   gtk_window_set_default_size (GTK_WINDOW (this->window_), kWinEdge, kWinEdge);
   gtk_window_set_title (GTK_WINDOW (this->window_), "Tictactoe");
   gtk_window_set_resizable (GTK_WINDOW (this->window_), FALSE);
@@ -20,7 +20,7 @@ void Window1::ActivateWindow() {
   gtk_container_set_border_width (GTK_CONTAINER (this->window_), 10);
   
   // make button grid
-  grid_ = gtk_grid_new();
+  this->grid_ = gtk_grid_new();
   gtk_container_add(GTK_CONTAINER (this->window_), grid_);
   this->AddButtons();
   
@@ -33,7 +33,7 @@ void Window1::ActivateWindow() {
     exit(1);
   }
   gtk_style_context_add_provider_for_screen (screen, GTK_STYLE_PROVIDER (provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-  gtk_widget_show_all (window_);
+  gtk_widget_show_all (this->window_);
   this->NewGame();
 }
 
