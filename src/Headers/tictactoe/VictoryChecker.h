@@ -8,5 +8,8 @@ class VictoryChecker {
     int Check();
   private:
     Board* board_;
+    int CheckDiagonals();
+    int CheckRows();
+    int CheckCols();
 };
 };
