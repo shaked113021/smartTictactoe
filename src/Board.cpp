@@ -1,115 +1,90 @@
 #include "Headers/Bot.h"
 #include <iostream>
 #include <unistd.h>
+
+using namespace tictactoe;
 // victory checker 
 /*
- *   USER = 1, BOT = 2 ,FALSE = 0, TIE = 3
+ *   kUser = 1, kBot = 2 ,FALSE = 0 kTIE = 3
  */
-int Board::checkVictory() {
-    bool mainD = true, secondD = true;
-    if(gBoard[0][0] == UNUSED) mainD = false;
-    if(gBoard[0][2] == UNUSED) secondD = false;
+int Board::CheckVictory() {
+    // check diagonals
+    bool main_diagonal = true, second_diagonal = true;
+    if(game_board_[0][0] == kUnused) main_diagonal = false;
+    if(game_board_[0][2] == kUnused) second_diagonal = false;
     for(int i = 0; i < 2; i++) {
-        if(mainD&& gBoard[i][i] != gBoard[i+1][i+1])
-            mainD = false;
-        if(secondD&&gBoard[i][2-i] != gBoard[i+1][2-(i+1)])
-            secondD = false;
+        if(main_diagonal&& game_board_[i][i] != game_board_[i+1][i+1])
+            main_diagonal = false;
+        if(second_diagonal&&game_board_[i][2-i] != game_board_[i+1][2-(i+1)])
+            second_diagonal = false;
     }
-    if(mainD) return gBoard[0][0];
-    if(secondD) return gBoard[0][2];
+    if(main_diagonal) return game_board_[0][0];
+    if(second_diagonal) return game_board_[0][2];
 
     // check rows 
     for(int i = 0; i < 3; i++) {
-        if(gBoard[i][0] == UNUSED) continue;
-        bool checkRow = true;
+        if(game_board_[i][0] == kUnused) continue;
+        bool check_row = true;
         for(int j = 1; j < 3; j++) {
-            if(checkRow&&gBoard[i][j] != gBoard[i][j-1])
-                checkRow = false;
+            if(check_row&&game_board_[i][j] != game_board_[i][j-1])
+                check_row = false;
         }
-        if(checkRow) return gBoard[i][0];
+        if(check_row) return game_board_[i][0];
     }
 
     // check cols
     for(int j = 0; j < 3; j++) {
-        bool checkCol = true;
-        if(gBoard[0][j] == UNUSED) checkCol = false;
+        bool check_col = true;
+        if(game_board_[0][j] == kUnused) check_col = false;
         for(int i = 0; i < 2; i++) {
-            if(checkCol && gBoard[i][j] != gBoard[i+1][j])
-                checkCol = false;
+            if(check_col && game_board_[i][j] != game_board_[i+1][j])
+                check_col = false;
         }
-        if(checkCol) return gBoard[0][j];
+        if(check_col) return game_board_[0][j];
     }
 
+    // if all empty, return false
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {
-            if(gBoard[i][j] == UNUSED)
+            if(game_board_[i][j] == kUnused)
                 return 0;
         }
     }
 
-    return TIE;
+    // if no other option left, this is a tie
+    return kTie;
     
 }
 
-int Board::getCell(int x, int y) {
-    return gBoard[y][x];
+int Board::GetCell(int x, int y) {
+    return game_board_[y][x];
 }
 
-void Board::setCell(int x, int y, int player) {
-    gBoard[y][x] = player;
+void Board::SetCell(int x, int y, int player) {
+    game_board_[y][x] = player;
 }
 
-void Board::drawBoard() {
-    int ret = system("clear");
-    if(ret != 0) exit(1);
-    for(int i = 0; i < 3; i++) {
-        printf("|\t");
-        for(int j = 0; j < 3; j++)
-        {
-            switch(gBoard[i][j])
-            {
-                case USER:
-                    printf("%c \t|\t", userChar);
-                    break;
-                case BOT:
-                    printf("%c \t|\t", botChar);
-                    break;
-                case UNUSED:
-                    printf("  \t|\t");
-                    break;
-                case CURSOR:
-                    printf("[] \t|\t");
-                    break;
-            }
-        }
-        if(i != 2)printf("\n--------------------------------------------------");
-        printf("\n");
-    }
-
-    printf("\n");
+void Board::SetUserChar(char c) {
+    user_char_ = c;
 }
 
-void Board::setUserChar(char c) {
-    userChar = c;
+void Board::SetBotChar(char c) {
+    bot_char_ = c;
 }
 
-void Board::setBotChar(char c) {
-    botChar = c;
-}
-
-void Board::resetBoard() {
+void Board::ResetBoard() {
     for(int i = 0; i < 3; i++)
         for(int j = 0; j < 3; j++) {
-            gBoard[i][j] = 0;
+            game_board_[i][j] = 0;
         }
 }
 
-char Board::getUserChar()
+char Board::GetUserChar()
 {
-    return userChar;
+    return user_char_;
 }
 
-char Board::getBotChar()
+char Board::GetBotChar()
 {
-    return botChar;
+    return bot_char_;
 }

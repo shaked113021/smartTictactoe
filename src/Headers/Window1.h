@@ -5,32 +5,32 @@
 
 class Window1 {
     private:
-        Bot *gameBot;
-        Board *board;
-        GtkWidget *window;
-        GtkWidget *grid;
-        GtkApplication *app;
-        char *execpath;
-        void addButtons();
-        void findXY(GtkWidget *button, int &x, int &y);
-        void updateButtons();
-        int victoryStatus;
-        enum buttonType {
+        tictactoe::Bot* game_bot_;
+        tictactoe::Board* board_;
+        GtkWidget* window_;
+        GtkWidget* grid_;
+        GtkApplication* app_;
+        char* exec_path_;
+        int victory_status_;
+        int status_;
+        void AddButtons();
+        void FindXY(GtkWidget *button, int &x, int &y);
+        void UpdateButtons();
+        enum ButtonType_ {
             OK = GTK_BUTTONS_OK,
             CLOSE = GTK_BUTTONS_CLOSE,
             CANCEL = GTK_BUTTONS_CANCEL,
             YES_NO = GTK_BUTTONS_YES_NO,
             OK_CANCEL = GTK_BUTTONS_OK_CANCEL
         };
-        int showMessage(buttonType buttons, gchar * message);
-        void parseResponse(int ret);
-        void botTurn();
-        int status;
-        void new_game();
+        int ShowMessage(ButtonType_ buttons, gchar * message);
+        void ParseResponse(int ret);
+        void BotTurn();
+        void NewGame();
 
     public:
         Window1(int argc, char **argv);
-        void gridButtonListener(GtkWidget *button);
-        void activateWindow();
+        void GridButtonListener(GtkWidget *button);
+        void ActivateWindow();
         ~Window1();
 };

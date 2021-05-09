@@ -1,22 +1,26 @@
 #pragma once
-#define USER 1
-#define BOT 2
-#define UNUSED 0
-#define TIE 3
-#define CURSOR 3
+const int kUser = 1;
+const int kBot = 2;
+const int kUnused = 0;
+const int kTie = 3;
 
-class Board {
-    public:
-        int checkVictory();
-        int getCell(int x, int y);
-        void setCell(int x, int y, int player);
-        void drawBoard();
-        void setUserChar(char c);
-        void setBotChar(char c);
-        char getUserChar();
-        char getBotChar();
-        void resetBoard();
-    private:
-        int gBoard[3][3];
-        char userChar, botChar;
+const int kRowAndCollSize = 3;
+
+namespace tictactoe {
+
+    class Board {
+        public:
+            int CheckVictory();
+            int GetCell(int x, int y);
+            void SetCell(int x, int y, int player);
+            void SetUserChar(char c);
+            void SetBotChar(char c);
+            char GetUserChar();
+            char GetBotChar();
+            void ResetBoard();
+        private:
+            int game_board_[kRowAndCollSize][kRowAndCollSize];
+            char user_char_;
+            char bot_char_;
+    };
 };

@@ -1,20 +1,22 @@
 #pragma once
 #include "Board.h"
-class Bot {
-    public:
-        void doMove(Board *board);
-        void setIsFirst(bool);
-    private:
-        struct Move {
-            int x;
-            int y;
-            int score;
-            Move(int mx, int my){x = mx, y= my;};
-            Move(int scr) {score = scr;};
-        };
-        
-        Move minimax(Board *board, int player);
-        void doRandom(Board *board);
-        bool isFirst = true;
-    
+namespace tictactoe {
+    class Bot {
+        public:
+            void DoMove(Board *board);
+            void SetIsFirst(bool);
+        private:
+            struct Move_ {
+                int x;
+                int y;
+                int score;
+                Move_(int mx, int my){x = mx, y= my;};
+                Move_(int scr) {score = scr;};
+            };
+
+            Move_ Minimax(Board *board, int player);
+            void DoRandom(Board *board);
+            bool is_first_ = true;
+
+    };
 };
