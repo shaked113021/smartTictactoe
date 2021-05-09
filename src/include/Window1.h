@@ -16,12 +16,12 @@ class Window1 {
     char* exec_path_;
     int victory_status_;
     int status_;
-    static const int kXYNotFound = -1;
-    static const int kStylepathSize = 80;
-    static const int kBotCharSize = 5;
-    static const int kUserCharSize = 5;
-    static const int kButtonWidthCells = 1;
-    static const int kButtonHeightCells = 1;
+    static const auto kXYNotFound = -1;
+    static const auto kStylepathSize = 80;
+    static const auto kBotCharSize = 5;
+    static const auto kUserCharSize = 5;
+    static const auto kButtonWidthCells = 1;
+    static const auto kButtonHeightCells = 1;
 
     void AddButtons();
     void FindXY(GtkWidget* button, int &x, int &y);

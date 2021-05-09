@@ -19,9 +19,9 @@ class Bot {
       Move_(int scr) {score = scr;};
     };
 
-    static const int kUserWinScore = -1;
-    static const int kBotWinScore = 1;
-    static const int kTieScore = 0;
+    static const auto kUserWinScore = -1;
+    static const auto kBotWinScore = 1;
+    static const auto kTieScore = 0;
     Move_ Minimax(int player);
     void DoRandom();
     bool is_first_ = true;

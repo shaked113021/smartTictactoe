@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <vector>
+#include <memory>
 
 using namespace tictactoe;
 
@@ -41,12 +42,12 @@ Bot::Move_ Bot::Minimax(int player) {
     }
   }
 
-  // create vector for moves
-  std::vector<Move_>* moves = new std::vector<Move_>;
+  // create vector for moves, using unique pointer for memory management
+  std::unique_ptr<std::vector<Move_>> moves{new std::vector<Move_>};
 
   // for each cell in the board, do move and call again using the other player
-  for(int i = 0; i < kRowAndCollSize; ++i) {
-    for(int j = 0; j < kRowAndCollSize; ++j) {
+  for(auto i = 0; i < kRowAndCollSize; ++i) {
+    for(auto j = 0; j < kRowAndCollSize; ++j) {
       // if unused, do move
       if(this->board_->GetCell(j, i) == kUnused) {  
         this->board_->SetCell(j, i, player);
@@ -60,7 +61,7 @@ Bot::Move_ Bot::Minimax(int player) {
         }
 
         // pushing move to vector and resetting cell 
-        moves->push_back(move);
+        moves.get()->push_back(move);
         this->board_->SetCell(j, i, kUnused);
       }
     }
@@ -73,7 +74,7 @@ Bot::Move_ Bot::Minimax(int player) {
   // if player is bot we are finding the move with largest score, if it is user we find the move with lowest score
   if(player == kBot) {
     int best_score = -1000000;
-    for(int i = 0; i < moves_size; ++i) {
+    for(auto i = 0; i < moves_size; ++i) {
       if((*moves)[i].score > best_score) {
         best_move_index = i;
         best_score = (*moves)[i].score;
@@ -81,7 +82,7 @@ Bot::Move_ Bot::Minimax(int player) {
     }
   } else {
     int best_score = 1000000;
-    for(int i = 0; i < moves_size; ++i) {
+    for(auto i = 0; i < moves_size; ++i) {
       if((*moves)[i].score < best_score) {
         best_move_index = i;
         best_score = (*moves)[i].score;
@@ -91,7 +92,6 @@ Bot::Move_ Bot::Minimax(int player) {
     
   // Retrieving best move from vector
   Move_ best_move = (*moves)[best_move_index];
-  delete moves; // the garbage truck waits outside...
   return best_move;
 }
 
