@@ -43,25 +43,24 @@ Bot::Move_ Bot::Minimax(Board* board, int player) {
 
   // for each cell in the board, do move and call again using the other player
   for(int i = 0; i < 3; i++) {
-      for(int j = 0; j < 3; j++)
-      {
-        // if unused, do move
-        if(board->GetCell(j, i) == kUnused) {  
-          board->SetCell(j, i, player);
-          Move_ move(j,i);
+    for(int j = 0; j < 3; j++) {
+      // if unused, do move
+      if(board->GetCell(j, i) == kUnused) {  
+        board->SetCell(j, i, player);
+        Move_ move(j,i);
 
-          // if we played as bot, we play next as user and vice versa
-          if(player == kBot) {
-              move.score = Minimax(board, kUser).score;
-          } else {
-              move.score = Minimax(board, kBot).score;
-          }
-
-          // pushing move to vector and resetting cell 
-          moves->push_back(move);
-          board->SetCell(j, i, kUnused);
+        // if we played as bot, we play next as user and vice versa
+        if(player == kBot) {
+          move.score = Minimax(board, kUser).score;
+        } else {
+          move.score = Minimax(board, kBot).score;
         }
+
+        // pushing move to vector and resetting cell 
+        moves->push_back(move);
+        board->SetCell(j, i, kUnused);
       }
+    }
   }
 
   // finding best move
