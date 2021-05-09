@@ -5,7 +5,7 @@
 
 using namespace tictactoe;
 
-// getting board in constractor
+// getting board and victory checker in constractor
 Bot::Bot(Board* board, VictoryChecker* victory_checker) : board_(board), victory_checker_(victory_checker) {}
 
 void Bot::DoMove() {
