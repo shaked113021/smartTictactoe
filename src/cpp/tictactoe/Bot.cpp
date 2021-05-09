@@ -69,13 +69,13 @@ Bot::Move_ Bot::Minimax(int player) {
   // finding best move
   moves->shrink_to_fit();
   int moves_size = (int)moves->size();
-  int best_move = 0;
+  int best_move_index = 0;
   // if player is bot we are finding the move with largest score, if it is user we find the move with lowest score
   if(player == kBot) {
     int best_score = -1000000;
     for(int i = 0; i < moves_size; ++i) {
       if((*moves)[i].score > best_score) {
-        best_move = i;
+        best_move_index = i;
         best_score = (*moves)[i].score;
       }
     }
@@ -83,16 +83,16 @@ Bot::Move_ Bot::Minimax(int player) {
     int best_score = 1000000;
     for(int i = 0; i < moves_size; ++i) {
       if((*moves)[i].score < best_score) {
-        best_move = i;
+        best_move_index = i;
         best_score = (*moves)[i].score;
       }
     }
   }
     
   // Retrieving best move from vector
-  Move_ ret = (*moves)[best_move];
+  Move_ best_move = (*moves)[best_move_index];
   delete moves; // the garbage truck waits outside...
-  return ret;
+  return best_move;
 }
 
 void Bot::DoRandom(){
