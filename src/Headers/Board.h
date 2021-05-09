@@ -10,7 +10,6 @@ const int kRowAndCollSize = 3;
 namespace tictactoe {
 class Board {
   public:
-    int CheckVictory();
     int GetCell(int x, int y) const;
     void SetCell(int x, int y, int player);
     void SetUserChar(char c);

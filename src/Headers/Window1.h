@@ -1,12 +1,14 @@
 #pragma once
 #include <gtk/gtk.h>
 #include "Bot.h"
+#include "VictoryChecker.h"
 
 
 class Window1 {
   private:
     tictactoe::Bot *game_bot_;
     tictactoe::Board *board_;
+    tictactoe::VictoryChecker *victory_checker_;
     GtkWidget *window_;
     GtkWidget *grid_;
     GtkApplication *app_;

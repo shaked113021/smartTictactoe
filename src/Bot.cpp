@@ -5,24 +5,27 @@
 
 using namespace tictactoe;
 
-void Bot::DoMove(Board* board) {
+// getting board in constractor
+Bot::Bot(Board* board, VictoryChecker* victory_checker) : board_(board), victory_checker_(victory_checker) {}
+
+void Bot::DoMove() {
   // if this is first move, we don't need to run minimax evaluation on board
   if (this->is_first_) {
-    this->DoRandom(board);
+    this->DoRandom();
     this->is_first_ = false;
   } else {
-    Move_ ret = Minimax(board, kBot);
-    board->SetCell(ret.x, ret.y, kBot);
+    Move_ move = Minimax(kBot);
+    this->board_->SetCell(move.x, move.y, kBot);
   }
 
 }
 
 
-Bot::Move_ Bot::Minimax(Board* board, int player) {
+Bot::Move_ Bot::Minimax(int player) {
   // check for game end
-  switch(board->CheckVictory()) {
+  switch(this->victory_checker_->Check()) {
     case kUser: {
-      return Move_(kBotWinScore);
+      return Move_(kUserWinScore);
     }
     case kBot: {
       return Move_(kBotWinScore);
@@ -42,23 +45,23 @@ Bot::Move_ Bot::Minimax(Board* board, int player) {
   std::vector<Move_>* moves = new std::vector<Move_>;
 
   // for each cell in the board, do move and call again using the other player
-  for(int i = 0; i < 3; ++i) {
-    for(int j = 0; j < 3; ++j) {
+  for(int i = 0; i < kRowAndCollSize; ++i) {
+    for(int j = 0; j < kRowAndCollSize; ++j) {
       // if unused, do move
-      if(board->GetCell(j, i) == kUnused) {  
-        board->SetCell(j, i, player);
+      if(this->board_->GetCell(j, i) == kUnused) {  
+        this->board_->SetCell(j, i, player);
         Move_ move(j,i);
 
         // if we played as bot, we play next as user and vice versa
         if(player == kBot) {
-          move.score = Minimax(board, kUser).score;
+          move.score = Minimax(kUser).score;
         } else {
-          move.score = Minimax(board, kBot).score;
+          move.score = Minimax(kBot).score;
         }
 
         // pushing move to vector and resetting cell 
         moves->push_back(move);
-        board->SetCell(j, i, kUnused);
+        board_->SetCell(j, i, kUnused);
       }
     }
   }
@@ -91,7 +94,7 @@ Bot::Move_ Bot::Minimax(Board* board, int player) {
   return ret;
 }
 
-void Bot::DoRandom(Board* board){
+void Bot::DoRandom(){
   int x;
   int y;
   
@@ -99,6 +102,6 @@ void Bot::DoRandom(Board* board){
   do{
     x = rand() % 2;
     y = rand() % 2;
-  } while(board->GetCell(x,y) != kUnused);
-  board->SetCell(x, y, kBot);
+  } while(this->board_->GetCell(x,y) != kUnused);
+  this->board_->SetCell(x, y, kBot);
 }

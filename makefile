@@ -1,6 +1,6 @@
 CFLAGS = `pkg-config --cflags gtk+-3.0` -O0 -Wall -Wextra
 LIBS = `pkg-config --libs gtk+-3.0` -export-dynamic
-SRC = src/Main.cpp src/Board.cpp src/Bot.cpp src/Window1.cpp src/findpath.cpp
+SRC = src/Main.cpp src/Board.cpp src/Bot.cpp src/Window1.cpp src/findpath.cpp src/VictoryChecker.cpp
 OBJ = $(SRC:.cpp = .o)
 CC = g++
 
@@ -9,3 +9,4 @@ build/bin/Main: $(OBJ)
 	cp -r src/Style/* build/Style/
 clean:
 	rm -f obj/core obj/*.o core
+

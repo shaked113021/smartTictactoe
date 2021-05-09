@@ -1,11 +1,16 @@
 #pragma once
 #include "Board.h"
+#include "VictoryChecker.h"
+
 namespace tictactoe {
 class Bot {
   public:
-    void DoMove(Board* board);
+    Bot(Board* board, VictoryChecker* victory_checker);
+    void DoMove();
     void SetIsFirst(bool);
   private:
+    Board* board_;
+    VictoryChecker* victory_checker_;
     struct Move_ {
       int x;
       int y;
@@ -17,8 +22,8 @@ class Bot {
     static const int kUserWinScore = -1;
     static const int kBotWinScore = 1;
     static const int kTieScore = 0;
-    Move_ Minimax(Board* board, int player);
-    void DoRandom(Board* board);
+    Move_ Minimax(int player);
+    void DoRandom();
     bool is_first_ = true;
 };
 };

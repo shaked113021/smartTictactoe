@@ -11,18 +11,18 @@ void Window1::ActivateWindow() {
   sprintf(stylepath, "%s/../Style/Window1.css", exec_path_);
   
   // make window
-  window_ = gtk_application_window_new (app_);
-  gtk_window_set_default_size (GTK_WINDOW (window_), kWinEdge, kWinEdge);
-  gtk_window_set_title (GTK_WINDOW (window_), "Tictactoe");
-  gtk_window_set_resizable (GTK_WINDOW (window_), FALSE);
-  gtk_window_set_decorated (GTK_WINDOW (window_), FALSE);
-  gtk_window_set_position (GTK_WINDOW (window_), GTK_WIN_POS_CENTER);
-  gtk_container_set_border_width (GTK_CONTAINER (window_), 10);
+  window_ = gtk_application_window_new (this->app_);
+  gtk_window_set_default_size (GTK_WINDOW (this->window_), kWinEdge, kWinEdge);
+  gtk_window_set_title (GTK_WINDOW (this->window_), "Tictactoe");
+  gtk_window_set_resizable (GTK_WINDOW (this->window_), FALSE);
+  gtk_window_set_decorated (GTK_WINDOW (this->window_), FALSE);
+  gtk_window_set_position (GTK_WINDOW (this->window_), GTK_WIN_POS_CENTER);
+  gtk_container_set_border_width (GTK_CONTAINER (this->window_), 10);
   
   // make button grid
   grid_ = gtk_grid_new();
-  gtk_container_add(GTK_CONTAINER (window_), grid_);
-  AddButtons();
+  gtk_container_add(GTK_CONTAINER (this->window_), grid_);
+  this->AddButtons();
   
   // load game styling CSS 
   GdkScreen* screen = gdk_screen_get_default();
@@ -34,7 +34,7 @@ void Window1::ActivateWindow() {
   }
   gtk_style_context_add_provider_for_screen (screen, GTK_STYLE_PROVIDER (provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
   gtk_widget_show_all (window_);
-  NewGame();
+  this->NewGame();
 }
 
 
@@ -43,7 +43,7 @@ void Window1::FindXY(GtkWidget* button, int& x, int& y)
   // for each button, find if it's pointer matches to given button
   for(int i = 0; i < kRowAndCollSize; ++i)
     for(int j = 0; j < kRowAndCollSize; ++j)
-      if(gtk_grid_get_child_at(GTK_GRID(grid_), j, i) == button) {
+      if(gtk_grid_get_child_at(GTK_GRID(this->grid_), j, i) == button) {
         x = j;
         y = i;
         return;
@@ -62,7 +62,7 @@ int Window1::ShowMessage(ButtonType_ buttons, gchar* message) {
   int type = GTK_MESSAGE_OTHER;
   
   // showing dialog
-  dialog = gtk_message_dialog_new (GTK_WINDOW (window_), (GtkDialogFlags)flags, (GtkMessageType)type, (GtkButtonsType)buttons, "%s",message);
+  dialog = gtk_message_dialog_new (GTK_WINDOW (this->window_), (GtkDialogFlags)flags, (GtkMessageType)type, (GtkButtonsType)buttons, "%s",message);
   int response = gtk_dialog_run(GTK_DIALOG (dialog));
   
   // as long as we don't have clear answer, show user the dialog
@@ -81,14 +81,14 @@ void Window1::UpdateButtons() {
   gchar user_char[kUserCharSize];
 
   // getting user char and bot char from board_
-  sprintf(bot_char,(char *)"%c", board_->GetBotChar());  
-  sprintf(user_char, (char*)"%c", board_->GetUserChar());
+  sprintf(bot_char,(char *)"%c", this->board_->GetBotChar());  
+  sprintf(user_char, (char*)"%c", this->board_->GetUserChar());
 
   // for each button, set name and label according to corresponding board cell
   for(int i=0; i < kRowAndCollSize; i++) {
     for(int j = 0; j < kRowAndCollSize; j++) {
-      button = gtk_grid_get_child_at(GTK_GRID (grid_), j, i);
-      switch (board_->GetCell(j, i)) {
+      button = gtk_grid_get_child_at(GTK_GRID (this->grid_), j, i);
+      switch (this->board_->GetCell(j, i)) {
         case kUser: {
           gtk_button_set_label (GTK_BUTTON (button), user_char);
           gtk_widget_set_name (button, "user");
@@ -116,11 +116,11 @@ void Window1::ParseEndGameResponse(int response)
 {
   switch(response) {
     case GTK_RESPONSE_YES: {
-      NewGame();
+      this->NewGame();
       break;
     }
     case GTK_RESPONSE_NO: {
-      g_application_quit(G_APPLICATION (app_));
+      g_application_quit(G_APPLICATION (this->app_));
       break;
     }
     default: {
@@ -131,8 +131,8 @@ void Window1::ParseEndGameResponse(int response)
 
 void Window1::GridButtonListener(GtkWidget* button) {
   // if game is ended. return
-  victory_status_ = board_->CheckVictory();
-  if(victory_status_ != kGamePending) return;
+  this->victory_status_ = this->victory_checker_->Check();
+  if(this->victory_status_ != kGamePending) return;
   
   // declarations
   int x;
@@ -141,50 +141,50 @@ void Window1::GridButtonListener(GtkWidget* button) {
   // find buttons, if not found or if button is used return
   FindXY(button, x, y);
   if((x == kXYNotFound) || (y == kXYNotFound)) return;
-  if(board_->GetCell (x, y) != kUnused) return;
+  if(this->board_->GetCell (x, y) != kUnused) return;
   
   // setting chosen cell to user
-  board_->SetCell(x, y, kUser);
-  UpdateButtons();
+  this->board_->SetCell(x, y, kUser);
+  this->UpdateButtons();
   
   // checking victory and display messages accordingly
-  victory_status_ = board_->CheckVictory();
-  if(victory_status_ == kUser) {
+  this->victory_status_ = this->victory_checker_->Check();
+  if(this->victory_status_ == kUser) {
     int response = ShowMessage(YES_NO,(gchar *)"Yay! you Won!\nDo you want to another game?");
-    ParseEndGameResponse(response);
+    this->ParseEndGameResponse(response);
     return;
   } else if(victory_status_ == kTie) {
     int response = ShowMessage(YES_NO, (gchar *)"Oh it\'s a tie! :\(\nDo you want to try Again?");
-    ParseEndGameResponse (response);
+    this->ParseEndGameResponse (response);
     return;
   }
   
   // do bot turn
-  BotTurn();
+  this->BotTurn();
 }
 
 void Window1::BotTurn() {
   // if game ended return
-  victory_status_ = board_->CheckVictory();
-  if(victory_status_ != kGamePending) return;
+  this->victory_status_ = this->victory_checker_->Check();
+  if(this->victory_status_ != kGamePending) return;
   
   // do bot move
-  game_bot_->DoMove(board_);
-  UpdateButtons();
+  this->game_bot_->DoMove();
+  this->UpdateButtons();
   
   // checking victory and display messages accordingly
-  victory_status_ = board_->CheckVictory();
+  this->victory_status_ = this->victory_checker_->Check();
   int response;
-  switch(victory_status_) {
+  switch(this->victory_status_) {
     case kBot: {
       response = ShowMessage(YES_NO, (gchar *) "Oh you lost :\(\nDo you want to try again?");
-      ParseEndGameResponse(response);
+      this->ParseEndGameResponse(response);
       return;
       break;
     }
     case kUser: {
       response = ShowMessage(YES_NO, (gchar*)"Oh it\'s a tie! :\(\nDo you want to try Again?");
-      ParseEndGameResponse(response);
+      this->ParseEndGameResponse(response);
       return;
       break;
     }
@@ -201,42 +201,43 @@ static void Activate(GtkApplication *Napp, Window1 &data) {
 
 Window1::Window1(int argc, char** argv) {   
   // initialize objects
-  game_bot_ = new tictactoe::Bot;
-  board_ = new tictactoe::Board;
+  this->board_ = new tictactoe::Board;
+  this->victory_checker_= new tictactoe::VictoryChecker(this->board_);
+  this->game_bot_ = new tictactoe::Bot(this->board_, this->victory_checker_);
 
   // find execution path
   std::string execpathstr = FindPath();
-  exec_path_ = new char[execpathstr.size() + 1];
+  this->exec_path_ = new char[execpathstr.size() + 1];
   strcpy(exec_path_, execpathstr.c_str());
 
   // initialize application
-  app_ = gtk_application_new ("shakedcohen.tictactoe", G_APPLICATION_FLAGS_NONE);
-  g_signal_connect (app_, "activate", G_CALLBACK (Activate), this);
-  status_ = g_application_run (G_APPLICATION (app_), argc, argv);
-  g_object_unref(app_); // the garbage truck comes...
+  this->app_ = gtk_application_new ("shakedcohen.tictactoe", G_APPLICATION_FLAGS_NONE);
+  g_signal_connect (this->app_, "activate", G_CALLBACK (Activate), this);
+  this->status_ = g_application_run (G_APPLICATION (this->app_), argc, argv);
+  g_object_unref(this->app_); // the garbage truck comes...
 
   // handle exit
-  if(status_ != 0) exit(status_);
+  if(this->status_ != 0) exit(this->status_);
 }
 
 void Window1::NewGame() {
   // reset board in a new game
-  board_->ResetBoard();
-  UpdateButtons();
-  victory_status_ = 0;
+  this->board_->ResetBoard();
+  this->UpdateButtons();
+  this->victory_status_ = 0;
 
   // ask user if it wants to be first
   int user_response = ShowMessage(YES_NO, (gchar *)"Do you want to be first?");
   switch(user_response) {
     case GTK_RESPONSE_YES: {
-      board_->SetBotChar('O');
-      board_->SetUserChar('X');
+      this->board_->SetBotChar('O');
+      this->board_->SetUserChar('X');
       break;
     }
     case GTK_RESPONSE_NO: {
-      board_->SetBotChar('X');
-      board_->SetUserChar('O');
-      BotTurn();
+      this->board_->SetBotChar('X');
+      this->board_->SetUserChar('O');
+      this->BotTurn();
       break;
     }    
   }
@@ -244,9 +245,9 @@ void Window1::NewGame() {
 
 Window1::~Window1() {
   // cleaning the garbage
-  delete game_bot_;
-  delete board_;
-  delete exec_path_;
+  delete this->game_bot_;
+  delete this->board_;
+  delete this->exec_path_;
 }
 
 // click handler
@@ -265,6 +266,6 @@ void Window1::AddButtons() {
       button = gtk_button_new();
       gtk_widget_set_size_request (button, button_edge, button_edge);
       g_signal_connect (button, "clicked", G_CALLBACK(OnGridButtonPress), this);
-      gtk_grid_attach (GTK_GRID (grid_), button, j, i, kButtonWidthCells, kButtonHeightCells);
+      gtk_grid_attach (GTK_GRID (this->grid_), button, j, i, kButtonWidthCells, kButtonHeightCells);
     }
 }
