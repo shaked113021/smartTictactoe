@@ -1,7 +1,8 @@
 #pragma once
 #include <gtk/gtk.h>
-#include "Bot.h"
-#include "VictoryChecker.h"
+#include "tictactoe/Board.h"
+#include "tictactoe/Bot.h"
+#include "tictactoe/VictoryChecker.h"
 
 
 class Window1 {

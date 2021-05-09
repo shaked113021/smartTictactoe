@@ -1,4 +1,4 @@
-#include "Headers/Bot.h"
+#include "../Headers/tictactoe/Bot.h"
 #include <cstdlib>
 #include <cstdio>
 #include <vector>
