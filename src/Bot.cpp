@@ -87,8 +87,7 @@ Bot::Move_ Bot::Minimax(Board* board, int player) {
     
   // Retrieving best move from vector
   Move_ ret = (*moves)[best_move];
-  // freeing used memory
-  delete moves; 
+  delete moves; // the garbage truck waits outside...
   return ret;
 }
 
