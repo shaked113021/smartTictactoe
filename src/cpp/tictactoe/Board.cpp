@@ -21,8 +21,8 @@ void Board::SetBotChar(char c) {
 }
 
 void Board::ResetBoard() {
-  for(int i = 0; i < 3; ++i)
-    for(int j = 0; j < 3; ++j) {
+  for(int i = 0; i < kRowAndCollSize; ++i)
+    for(int j = 0; j < kRowAndCollSize; ++j) {
       game_board_[i][j] = 0;
     }
 }
