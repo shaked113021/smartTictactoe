@@ -70,20 +70,24 @@ void Window1::UpdateButtons() {
     for(int j = 0; j < kRowAndCollSize; j++) {
       button = gtk_grid_get_child_at(GTK_GRID (grid_), j, i);
       switch (board_->GetCell(j, i)) {
-        case kUser:
+        case kUser: {
           gtk_button_set_label (GTK_BUTTON (button), user_char);
           gtk_widget_set_name (button, "user");
           break;
-        case kBot:
+        }
+        case kBot: {
           gtk_button_set_label (GTK_BUTTON (button), bot_char);
           gtk_widget_set_name (button, "bot");
           break;
-        case kUnused:
+        }
+        case kUnused: {
           gtk_button_set_label (GTK_BUTTON (button), " ");
           gtk_widget_set_name (button, "default");
           break;
-        default:
+        }
+        default: {
           g_print("Invalid argument in update Buttons\n");
+        }
       }
     }
 }
@@ -91,14 +95,17 @@ void Window1::UpdateButtons() {
 void Window1::ParseResponse(int ret)
 {
   switch(ret) {
-    case GTK_RESPONSE_YES:
+    case GTK_RESPONSE_YES: {
       NewGame();
       break;
-    case GTK_RESPONSE_NO:
+    }
+    case GTK_RESPONSE_NO: {
       g_application_quit(G_APPLICATION (app_));
       break;
-    default:
+    }
+    default: {
       break;
+    }
   }
 }
 
@@ -136,18 +143,21 @@ void Window1::BotTurn() {
   victory_status_ = board_->CheckVictory();
   int ret;
   switch(victory_status_) {
-    case kBot:
+    case kBot: {
       ret = ShowMessage(YES_NO, (gchar *) "Oh you lost :\(\nDo you want to try again?");
       ParseResponse(ret);
       return;
       break;
-    case kUser:
+    }
+    case kUser: {
       ret = ShowMessage(YES_NO, (gchar*)"Oh it\'s a tie! :\(\nDo you want to try Again?");
       ParseResponse(ret);
       return;
       break;
-    default:
+    }
+    default: {
       break;
+    }
   }
 }
 
@@ -178,15 +188,17 @@ void Window1::NewGame() {
   victory_status_ = 0;
   int ret = ShowMessage(YES_NO, (gchar *)"Do you want to be first?");
   switch(ret) {
-    case GTK_RESPONSE_YES:
+    case GTK_RESPONSE_YES: {
       board_->SetBotChar('O');
       board_->SetUserChar('X');
       break;
-    case GTK_RESPONSE_NO:
+    }
+    case GTK_RESPONSE_NO: {
       board_->SetBotChar('X');
       board_->SetUserChar('O');
       BotTurn();
-      break;    
+      break;
+    }    
   }
 }
 

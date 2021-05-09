@@ -21,16 +21,21 @@ void Bot::DoMove(Board* board) {
 Bot::Move_ Bot::Minimax(Board* board, int player) {
   // check for game end
   switch(board->CheckVictory()) {
-    case kUser:
+    case kUser: {
       return Move_(-1);
-    case kBot:
+    }
+    case kBot: {
       return Move_(1);
-    case kTie:
+    }
+    case kTie: {
       return Move_(0);
-    case 0:
+    }
+    case 0: {
       break;
-    default:
+    }
+    default: {
       exit(1);
+    }
   }
 
   // create vector for moves
