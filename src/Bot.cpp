@@ -42,8 +42,8 @@ Bot::Move_ Bot::Minimax(Board* board, int player) {
   std::vector<Move_>* moves = new std::vector<Move_>;
 
   // for each cell in the board, do move and call again using the other player
-  for(int i = 0; i < 3; i++) {
-    for(int j = 0; j < 3; j++) {
+  for(int i = 0; i < 3; ++i) {
+    for(int j = 0; j < 3; ++j) {
       // if unused, do move
       if(board->GetCell(j, i) == kUnused) {  
         board->SetCell(j, i, player);
@@ -69,7 +69,7 @@ Bot::Move_ Bot::Minimax(Board* board, int player) {
   // if player is bot we are finding the move with largest score, if it is user we find the move with lowest score
   if(player == kBot) {
     int best_score = -1000000;
-    for(int i = 0; i < (int)moves->size(); i++) {
+    for(int i = 0; i < (int)moves->size(); ++i) {
       if((*moves)[i].score > best_score) {
         best_move = i;
         best_score = (*moves)[i].score;
@@ -77,7 +77,7 @@ Bot::Move_ Bot::Minimax(Board* board, int player) {
     }
   } else {
     int best_score = 1000000;
-    for(int i = 0; i < (int)moves->size(); i++) {
+    for(int i = 0; i < (int)moves->size(); ++i) {
       if((*moves)[i].score < best_score) {
         best_move = i;
         best_score = (*moves)[i].score;
@@ -98,8 +98,8 @@ void Bot::DoRandom(Board* board){
   
   // generate random x and y until hitting a clear spot
   do{
-      x = rand() % 2;
-      y = rand() % 2;
+    x = rand() % 2;
+    y = rand() % 2;
   } while(board->GetCell(x,y) != kUnused);
   board->SetCell(x, y, kBot);
 }

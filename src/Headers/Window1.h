@@ -13,6 +13,13 @@ class Window1 {
     char* exec_path_;
     int victory_status_;
     int status_;
+    static const int kXYNotFound = -1;
+    static const int kStylepathSize = 80;
+    static const int kBotCharSize = 5;
+    static const int kUserCharSize = 5;
+    static const int kButtonWidthCells = 1;
+    static const int kButtonHeightCells = 1;
+
     void AddButtons();
     void FindXY(GtkWidget* button, int &x, int &y);
     void UpdateButtons();
@@ -23,11 +30,10 @@ class Window1 {
       YES_NO = GTK_BUTTONS_YES_NO,
       OK_CANCEL = GTK_BUTTONS_OK_CANCEL
       };
-      int ShowMessage(ButtonType_ buttons, gchar* message);
-      void ParseResponse(int ret);
-      void BotTurn();
-      void NewGame();
-
+    int ShowMessage(ButtonType_ buttons, gchar* message);
+    void ParseEndGameResponse(int ret);
+    void BotTurn();
+    void NewGame();
   public:
     Window1(int argc, char** argv);
     void GridButtonListener(GtkWidget* button);

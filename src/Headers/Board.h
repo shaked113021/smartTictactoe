@@ -3,6 +3,7 @@ const int kUser = 1;
 const int kBot = 2;
 const int kUnused = 0;
 const int kTie = 3;
+const int kGamePending = 0;
 
 const int kRowAndCollSize = 3;
 

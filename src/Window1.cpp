@@ -6,8 +6,11 @@
 const int kWinEdge = 600;
 
 void Window1::ActivateWindow() {
-  char stylepath[80];
+  // make stylesheet path string
+  char stylepath[kStylepathSize];
   sprintf(stylepath, "%s/../Style/Window1.css", exec_path_);
+  
+  // make window
   window_ = gtk_application_window_new (app_);
   gtk_window_set_default_size (GTK_WINDOW (window_), kWinEdge, kWinEdge);
   gtk_window_set_title (GTK_WINDOW (window_), "Tictactoe");
@@ -15,9 +18,13 @@ void Window1::ActivateWindow() {
   gtk_window_set_decorated (GTK_WINDOW (window_), FALSE);
   gtk_window_set_position (GTK_WINDOW (window_), GTK_WIN_POS_CENTER);
   gtk_container_set_border_width (GTK_CONTAINER (window_), 10);
+  
+  // make button grid
   grid_ = gtk_grid_new();
   gtk_container_add(GTK_CONTAINER (window_), grid_);
   AddButtons();
+  
+  // load game styling CSS 
   GdkScreen* screen = gdk_screen_get_default();
   GtkCssProvider* provider = gtk_css_provider_new();
   gboolean ret = gtk_css_provider_load_from_path (provider, stylepath,NULL);
@@ -33,40 +40,52 @@ void Window1::ActivateWindow() {
 
 void Window1::FindXY(GtkWidget* button, int& x, int& y)
 {
-  for(int i = 0; i < kRowAndCollSize; i++)
-    for(int j = 0; j < kRowAndCollSize; j++)
+  // for each button, find if it's pointer matches to given button
+  for(int i = 0; i < kRowAndCollSize; ++i)
+    for(int j = 0; j < kRowAndCollSize; ++j)
       if(gtk_grid_get_child_at(GTK_GRID(grid_), j, i) == button) {
         x = j;
         y = i;
         return;
       }
-  x = -1;
-  y=-1;
+
+  // if we didn't found button, we return -1
+  x = kXYNotFound;
+  y = kXYNotFound;
   return;
 }
 
 int Window1::ShowMessage(ButtonType_ buttons, gchar* message) {
+  // declarations
   GtkWidget* dialog;
   int flags = GTK_DIALOG_DESTROY_WITH_PARENT;
   int type = GTK_MESSAGE_OTHER;
   
+  // showing dialog
   dialog = gtk_message_dialog_new (GTK_WINDOW (window_), (GtkDialogFlags)flags, (GtkMessageType)type, (GtkButtonsType)buttons, "%s",message);
-  int ret = gtk_dialog_run(GTK_DIALOG (dialog));
-  while(ret == GTK_RESPONSE_CLOSE) {
-    ret = gtk_dialog_run(GTK_DIALOG (dialog));
+  int response = gtk_dialog_run(GTK_DIALOG (dialog));
+  
+  // as long as we don't have clear answer, show user the dialog
+  while(response == GTK_RESPONSE_CLOSE) {
+    response = gtk_dialog_run(GTK_DIALOG (dialog));
   }
-  gtk_widget_destroy (dialog);
-  return ret;
+
+  gtk_widget_destroy (dialog); // the garbege truck comes...
+  return response;
 }
 
 void Window1::UpdateButtons() {
+  // declarations
   GtkWidget* button;
-  gchar bot_char[5];
-  sprintf(bot_char,(char *)"%c", board_->GetBotChar());
-  gchar user_char[5];
+  gchar bot_char[kBotCharSize];
+  gchar user_char[kUserCharSize];
+
+  // getting user char and bot char from board_
+  sprintf(bot_char,(char *)"%c", board_->GetBotChar());  
   sprintf(user_char, (char*)"%c", board_->GetUserChar());
 
-  for(int i=0; i < kRowAndCollSize; i++)
+  // for each button, set name and label according to corresponding board cell
+  for(int i=0; i < kRowAndCollSize; i++) {
     for(int j = 0; j < kRowAndCollSize; j++) {
       button = gtk_grid_get_child_at(GTK_GRID (grid_), j, i);
       switch (board_->GetCell(j, i)) {
@@ -90,11 +109,12 @@ void Window1::UpdateButtons() {
         }
       }
     }
+  }
 }
 
-void Window1::ParseResponse(int ret)
+void Window1::ParseEndGameResponse(int response)
 {
-  switch(ret) {
+  switch(response) {
     case GTK_RESPONSE_YES: {
       NewGame();
       break;
@@ -110,48 +130,61 @@ void Window1::ParseResponse(int ret)
 }
 
 void Window1::GridButtonListener(GtkWidget* button) {
+  // if game is ended. return
   victory_status_ = board_->CheckVictory();
-  if(victory_status_ != 0) return;
-  int x, y;
+  if(victory_status_ != kGamePending) return;
+  
+  // declarations
+  int x;
+  int y;
+  
+  // find buttons, if not found or if button is used return
   FindXY(button, x, y);
-  if(x == -1 || y == -1) return;
+  if((x == kXYNotFound) || (y == kXYNotFound)) return;
   if(board_->GetCell (x, y) != kUnused) return;
   
+  // setting chosen cell to user
   board_->SetCell(x, y, kUser);
   UpdateButtons();
   
+  // checking victory and display messages accordingly
   victory_status_ = board_->CheckVictory();
   if(victory_status_ == kUser) {
-    int ret = ShowMessage(YES_NO,(gchar *)"Yay! you Won!\nDo you want to another game?");
-    ParseResponse(ret);
+    int response = ShowMessage(YES_NO,(gchar *)"Yay! you Won!\nDo you want to another game?");
+    ParseEndGameResponse(response);
     return;
   } else if(victory_status_ == kTie) {
-    int ret = ShowMessage(YES_NO, (gchar *)"Oh it\'s a tie! :\(\nDo you want to try Again?");
-    ParseResponse (ret);
+    int response = ShowMessage(YES_NO, (gchar *)"Oh it\'s a tie! :\(\nDo you want to try Again?");
+    ParseEndGameResponse (response);
     return;
   }
   
+  // do bot turn
   BotTurn();
 }
 
 void Window1::BotTurn() {
+  // if game ended return
   victory_status_ = board_->CheckVictory();
-  if(victory_status_ != 0) return;
+  if(victory_status_ != kGamePending) return;
+  
+  // do bot move
   game_bot_->DoMove(board_);
   UpdateButtons();
   
+  // checking victory and display messages accordingly
   victory_status_ = board_->CheckVictory();
-  int ret;
+  int response;
   switch(victory_status_) {
     case kBot: {
-      ret = ShowMessage(YES_NO, (gchar *) "Oh you lost :\(\nDo you want to try again?");
-      ParseResponse(ret);
+      response = ShowMessage(YES_NO, (gchar *) "Oh you lost :\(\nDo you want to try again?");
+      ParseEndGameResponse(response);
       return;
       break;
     }
     case kUser: {
-      ret = ShowMessage(YES_NO, (gchar*)"Oh it\'s a tie! :\(\nDo you want to try Again?");
-      ParseResponse(ret);
+      response = ShowMessage(YES_NO, (gchar*)"Oh it\'s a tie! :\(\nDo you want to try Again?");
+      ParseEndGameResponse(response);
       return;
       break;
     }
@@ -162,32 +195,39 @@ void Window1::BotTurn() {
 }
 
 static void Activate(GtkApplication *Napp, Window1 &data) {
+  // at activation, call window activation
   data.ActivateWindow();
-  Napp = NULL;
-  delete Napp;
 }
 
-Window1::Window1(int argc, char **argv) {   
+Window1::Window1(int argc, char** argv) {   
+  // initialize objects
   game_bot_ = new tictactoe::Bot;
   board_ = new tictactoe::Board;
+
+  // find execution path
   std::string execpathstr = FindPath();
   exec_path_ = new char[execpathstr.size() + 1];
   strcpy(exec_path_, execpathstr.c_str());
 
+  // initialize application
   app_ = gtk_application_new ("shakedcohen.tictactoe", G_APPLICATION_FLAGS_NONE);
   g_signal_connect (app_, "activate", G_CALLBACK (Activate), this);
   status_ = g_application_run (G_APPLICATION (app_), argc, argv);
-  g_object_unref(app_);
+  g_object_unref(app_); // the garbage truck comes...
 
+  // handle exit
   if(status_ != 0) exit(status_);
 }
 
 void Window1::NewGame() {
+  // reset board in a new game
   board_->ResetBoard();
   UpdateButtons();
   victory_status_ = 0;
-  int ret = ShowMessage(YES_NO, (gchar *)"Do you want to be first?");
-  switch(ret) {
+
+  // ask user if it wants to be first
+  int user_response = ShowMessage(YES_NO, (gchar *)"Do you want to be first?");
+  switch(user_response) {
     case GTK_RESPONSE_YES: {
       board_->SetBotChar('O');
       board_->SetUserChar('X');
@@ -203,25 +243,28 @@ void Window1::NewGame() {
 }
 
 Window1::~Window1() {
+  // cleaning the garbage
   delete game_bot_;
   delete board_;
   delete exec_path_;
 }
 
-
-
-static void onGridButtonPress(GtkWidget *button, Window1 &data) {
+// click handler
+static void OnGridButtonPress(GtkWidget *button, Window1 &data) {
   data.GridButtonListener(button);
 }
 
 void Window1::AddButtons() {
+  // declarations
   GtkWidget* button;
   int button_edge = kWinEdge / kRowAndCollSize;
-  for(int i = 0; i < kRowAndCollSize; i++)
-    for(int j = 0; j < kRowAndCollSize; j++) {
+
+  // for each cell in board, create new button and add to grid
+  for(int i = 0; i < kRowAndCollSize; ++i)
+    for(int j = 0; j < kRowAndCollSize; ++j) {
       button = gtk_button_new();
       gtk_widget_set_size_request (button, button_edge, button_edge);
-      g_signal_connect (button, "clicked", G_CALLBACK(onGridButtonPress), this);
-      gtk_grid_attach (GTK_GRID (grid_), button, j, i, 1,1);
+      g_signal_connect (button, "clicked", G_CALLBACK(OnGridButtonPress), this);
+      gtk_grid_attach (GTK_GRID (grid_), button, j, i, kButtonWidthCells, kButtonHeightCells);
     }
 }

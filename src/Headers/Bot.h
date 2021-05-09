@@ -17,7 +17,6 @@ class Bot {
     static const int kUserWinScore = -1;
     static const int kBotWinScore = 1;
     static const int kTieScore = 0;
-    static const int kGamePending = 0;
     Move_ Minimax(Board* board, int player);
     void DoRandom(Board* board);
     bool is_first_ = true;
