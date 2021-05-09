@@ -22,15 +22,15 @@ Bot::Move_ Bot::Minimax(Board* board, int player) {
   // check for game end
   switch(board->CheckVictory()) {
     case kUser: {
-      return Move_(-1);
+      return Move_(kBotWinScore);
     }
     case kBot: {
-      return Move_(1);
+      return Move_(kBotWinScore);
     }
     case kTie: {
-      return Move_(0);
+      return Move_(kTieScore);
     }
-    case 0: {
+    case kGamePending: {
       break;
     }
     default: {
