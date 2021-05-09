@@ -61,7 +61,7 @@ Bot::Move_ Bot::Minimax(int player) {
 
         // pushing move to vector and resetting cell 
         moves->push_back(move);
-        board_->SetCell(j, i, kUnused);
+        this->board_->SetCell(j, i, kUnused);
       }
     }
   }
