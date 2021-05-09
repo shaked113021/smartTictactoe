@@ -1,4 +1,4 @@
-#include "../Headers/tictactoe/Board.h"
+#include "../../include/tictactoe/Board.h"
 #include <iostream>
 #include <unistd.h>
 
