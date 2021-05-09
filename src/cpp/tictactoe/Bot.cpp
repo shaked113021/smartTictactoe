@@ -68,11 +68,12 @@ Bot::Move_ Bot::Minimax(int player) {
 
   // finding best move
   moves->shrink_to_fit();
+  int moves_size = (int)moves->size();
   int best_move = 0;
   // if player is bot we are finding the move with largest score, if it is user we find the move with lowest score
   if(player == kBot) {
     int best_score = -1000000;
-    for(int i = 0; i < (int)moves->size(); ++i) {
+    for(int i = 0; i < moves_size; ++i) {
       if((*moves)[i].score > best_score) {
         best_move = i;
         best_score = (*moves)[i].score;
@@ -80,7 +81,7 @@ Bot::Move_ Bot::Minimax(int player) {
     }
   } else {
     int best_score = 1000000;
-    for(int i = 0; i < (int)moves->size(); ++i) {
+    for(int i = 0; i < moves_size; ++i) {
       if((*moves)[i].score < best_score) {
         best_move = i;
         best_score = (*moves)[i].score;
@@ -100,8 +101,8 @@ void Bot::DoRandom(){
   
   // generate random x and y until hitting a clear spot
   do{
-    x = rand() % 2;
-    y = rand() % 2;
+    x = rand() % (kRowAndCollSize - 1);
+    y = rand() % (kRowAndCollSize - 1);
   } while(this->board_->GetCell(x,y) != kUnused);
   this->board_->SetCell(x, y, kBot);
 }
