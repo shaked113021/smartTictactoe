@@ -43,7 +43,7 @@ Bot::Move_ Bot::Minimax(int player) {
   }
 
   // create vector for moves, using unique pointer for memory management
-  std::unique_ptr<std::vector<Move_>> moves{new std::vector<Move_>};
+  std::unique_ptr<std::vector<Move_>> moves(new std::vector<Move_>);
 
   // for each cell in the board, do move and call again using the other player
   for(auto i = 0; i < kRowAndCollSize; ++i) {
