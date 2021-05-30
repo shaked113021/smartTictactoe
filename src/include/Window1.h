@@ -3,12 +3,14 @@
 #include "tictactoe/Board.h"
 #include "tictactoe/Bot.h"
 #include "tictactoe/VictoryChecker.h"
+#include "tictactoe/botstrategies/IStrategy.h"
 
 
 class Window1 {
   private:
     tictactoe::Bot *game_bot_;
     tictactoe::Board *board_;
+    tictactoe::botstrategies::IStrategy* strategy_;
     tictactoe::VictoryChecker *victory_checker_;
     GtkWidget *window_;
     GtkWidget *grid_;

@@ -1,5 +1,6 @@
 #include "Window1.h"
 #include "findpath.h"
+#include "tictactoe/botstrategies/MinimaxStrategy.h"
 #include <string>
 #include <cstring>
 
@@ -203,7 +204,8 @@ Window1::Window1(int argc, char** argv) {
   // initialize objects
   this->board_ = new tictactoe::Board;
   this->victory_checker_= new tictactoe::VictoryChecker(this->board_);
-  this->game_bot_ = new tictactoe::Bot(this->board_, this->victory_checker_);
+  this->strategy_ = new tictactoe::botstrategies::MinimaxStrategy(this->board_, this->victory_checker_);
+  this->game_bot_ = new tictactoe::Bot(this->board_, strategy_);
 
   // find execution path
   std::string execpathstr = FindPath();
@@ -246,6 +248,7 @@ void Window1::NewGame() {
 Window1::~Window1() {
   // cleaning the garbage
   delete this->game_bot_;
+  delete this->strategy_;
   delete this->board_;
   delete this->exec_path_;
 }
