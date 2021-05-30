@@ -27,7 +27,7 @@ Move MinimaxStrategy::Max() const {
       return Move(kBotWinScore);
     }
     case kTie: {
-      // return 0
+      // if tie return 0
       return Move(kTieScore);
     }
     case kGamePending: {
@@ -92,7 +92,7 @@ Move MinimaxStrategy::Min() const {
       return Move(kBotWinScore);
     }
     case kTie: {
-      // return 0
+      // if tie return 0
       return Move(kTieScore);
     }
     case kGamePending: {
