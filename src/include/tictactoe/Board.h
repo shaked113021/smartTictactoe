@@ -5,7 +5,7 @@ const auto kUnused = 0;
 const auto kTie = 3;
 const auto kGamePending = 0;
 
-const int kRowAndCollSize = 3;
+const auto kRowAndCollSize = 3;
 
 namespace tictactoe
 {

@@ -44,7 +44,7 @@ Move MinimaxStrategy::Max() const
     default:
     {
       // if default, not a valid return value, probably a result of a stack overflow
-      std::cout << "return value of victory checker was not valid, check for stack overflow";
+      std::cout << "return value of victory checker was not valid, check for stack overflow\n";
       exit(1);
     }
   }
@@ -53,9 +53,9 @@ Move MinimaxStrategy::Max() const
   std::unique_ptr<std::vector<Move>> moves(new std::vector<Move>);
 
   // for each cell in the board, do move and call min
-  for(auto y = 0; y < kRowAndCollSize; ++y)
+  for(size_t y = 0; y < kRowAndCollSize; ++y)
   {
-    for(auto x = 0; x < kRowAndCollSize; ++x)
+    for(size_t x = 0; x < kRowAndCollSize; ++x)
     {
       // if unused, do move
       if(this->m_board->GetCell(x, y) == kUnused)
@@ -79,14 +79,15 @@ Move MinimaxStrategy::Max() const
   // find best score
   int max_score = moves->at(0).score;
   int max_score_index = 0;
-  int size = moves->size();
+  size_t size = moves->size();
 
   // running on entire vector trying to find max score move
-  for (auto i = 1; i < size; ++i)
+  for (size_t i = 1; i < size; ++i)
   {
-    if (moves->at(i).score > max_score)
+    int current_score = moves->at(i).score;
+    if (current_score > max_score)
     {
-      max_score = moves->at(i).score;
+      max_score = current_score;
       max_score_index = i;
     }
   }
@@ -130,9 +131,9 @@ Move MinimaxStrategy::Min() const
   std::unique_ptr<std::vector<Move>> moves(new std::vector<Move>);
 
   // for each cell in the board, do move and call max
-  for(auto y = 0; y < kRowAndCollSize; ++y)
+  for(size_t y = 0; y < kRowAndCollSize; ++y)
   {
-    for(auto x = 0; x < kRowAndCollSize; ++x)
+    for(size_t x = 0; x < kRowAndCollSize; ++x)
     {
       // if unused, do move
       if(this->m_board->GetCell(x, y) == kUnused)
@@ -155,14 +156,15 @@ Move MinimaxStrategy::Min() const
   // find best score
   int min_score = moves->at(0).score;
   int min_score_index = 0;
-  int size = moves->size();
+  size_t size = moves->size();
 
-  // running on entire vector trying to find max score move
-  for (auto i = 1; i < size; ++i)
+  // running on entire vector trying to find min score move
+  for (size_t i = 1; i < size; ++i)
   {
-    if (moves->at(i).score < min_score)
+    int current_score = moves->at(i).score;
+    if (current_score < min_score)
     {
-      min_score = moves->at(i).score;
+      min_score = current_score;
       min_score_index = i;
     }
   }
