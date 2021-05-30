@@ -7,7 +7,7 @@ namespace tictactoe {
 class Bot {
   public:
     Bot(Board* board, botstrategies::IStrategy* strategy);
-    void DoMove();
+    void DoMove() const;
   private:
     Board* board_;
     botstrategies::IStrategy* strategy_;
