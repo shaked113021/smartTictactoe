@@ -4,18 +4,21 @@
 #include "tictactoe/VictoryChecker.h"
 #include "tictactoe/Move.h"
 
-namespace tictactoe {
-namespace botstrategies {
+namespace tictactoe
+{
+namespace botstrategies
+{
 
-class MinimaxStrategy : public IStrategy {
+class MinimaxStrategy : public IStrategy
+{
   public:
-    MinimaxStrategy(Board* board, VictoryChecker* victory_checker);
+    MinimaxStrategy(Board* t_board, VictoryChecker* t_victory_checker);
     Move GenerateMove() override;
     ~MinimaxStrategy();
     
   private:
-    Board *board_;
-    VictoryChecker* victory_checker_;
+    Board *m_board;
+    VictoryChecker* m_victory_checker;
 
     static const auto kUserWinScore = -1;
     static const auto kBotWinScore = 1;

@@ -4,7 +4,7 @@
 using namespace tictactoe;
 using namespace tictactoe::botstrategies;
 
-RandomMoveStrategy::RandomMoveStrategy(Board *board) : board_(board) {}
+RandomMoveStrategy::RandomMoveStrategy(Board *t_board) : m_board(t_board) {}
 
 RandomMoveStrategy::~RandomMoveStrategy() {}
 
@@ -16,7 +16,7 @@ Move RandomMoveStrategy::GenerateMove() {
   do{
     x = rand() % (kRowAndCollSize - 1);
     y = rand() % (kRowAndCollSize - 1);
-  } while(this->board_->GetCell(x,y) != kUnused);
+  } while(this->m_board->GetCell(x,y) != kUnused);
   
   return Move(x, y);
 }

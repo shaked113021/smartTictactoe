@@ -8,12 +8,12 @@ namespace botstrategies {
 
 class RandomMoveStrategy : public IStrategy {
   public:
-    RandomMoveStrategy(Board* board);
+    RandomMoveStrategy(Board* t_board);
     Move GenerateMove() override;
     ~RandomMoveStrategy();
 
   private:
-    Board *board_;
+    Board *m_board;
 };
 }
 }

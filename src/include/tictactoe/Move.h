@@ -1,12 +1,14 @@
 #pragma once
 
-namespace tictactoe {
-struct Move {
+namespace tictactoe
+{
+struct Move
+{
   int x;
   int y;
   int score;
 
-  Move(int x_, int y_);
-  Move(int scr);
+  Move(int t_x, int t_y);
+  Move(int t_score);
 };
 }

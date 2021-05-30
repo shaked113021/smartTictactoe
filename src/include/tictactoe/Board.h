@@ -7,19 +7,21 @@ const auto kGamePending = 0;
 
 const int kRowAndCollSize = 3;
 
-namespace tictactoe {
-class Board {
+namespace tictactoe
+{
+class Board
+{
   public:
-    int GetCell(int x, int y) const;
-    void SetCell(int x, int y, int player);
-    void SetUserChar(char c);
-    void SetBotChar(char c);
+    int GetCell(int t_x, int t_y) const;
+    void SetCell(int t_x, int t_y, int t_player);
+    void SetUserChar(char t_user_char);
+    void SetBotChar(char t_bot_char);
     char GetUserChar() const;
     char GetBotChar() const;
-    void ResetBoard();
+    void Reset();
   private:
-    int game_board_[kRowAndCollSize][kRowAndCollSize];
-    char user_char_;
-    char bot_char_;
+    int m_game_board[kRowAndCollSize][kRowAndCollSize];
+    char m_user_char;
+    char m_bot_char;
 };
 };

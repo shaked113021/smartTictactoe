@@ -4,7 +4,8 @@
 namespace tictactoe {
 namespace botstrategies {
 
-class IStrategy {
+class IStrategy
+{
   public:
     virtual Move GenerateMove() = 0;
     virtual ~IStrategy() {};
