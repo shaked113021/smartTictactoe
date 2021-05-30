@@ -1,4 +1,4 @@
-#include "../include/findpath.h"
+#include "findpath.h"
 #include <errno.h>
 #include <unistd.h>
 #include <cstring>

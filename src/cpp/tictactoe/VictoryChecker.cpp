@@ -1,4 +1,4 @@
-#include "../../include/tictactoe/VictoryChecker.h"
+#include "tictactoe/VictoryChecker.h"
 
 using namespace tictactoe;
 VictoryChecker::VictoryChecker(Board* board) : board_(board) {}

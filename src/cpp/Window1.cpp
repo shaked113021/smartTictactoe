@@ -1,5 +1,5 @@
-#include "../include/Window1.h"
-#include "../include/findpath.h"
+#include "Window1.h"
+#include "findpath.h"
 #include <string>
 #include <cstring>
 
