@@ -9,6 +9,8 @@ using namespace tictactoe::botstrategies;
 
 MinimaxStrategy::MinimaxStrategy(Board* board, VictoryChecker* victory_checker) : board_(board), victory_checker_(victory_checker) {}
 
+MinimaxStrategy::~MinimaxStrategy() {}
+
 Move MinimaxStrategy::GenerateMove() {
   return Max();
 }
@@ -111,7 +113,7 @@ Move MinimaxStrategy::Min() const {
     for(auto x = 0; x < kRowAndCollSize; ++x) {
       // if unused, do move
       if(this->board_->GetCell(x, y) == kUnused) {  
-        this->board_->SetCell(x, y, kBot);
+        this->board_->SetCell(x, y, kUser);
         Move move(x,y);
         // Play as Max next
         move.score = Max().score;

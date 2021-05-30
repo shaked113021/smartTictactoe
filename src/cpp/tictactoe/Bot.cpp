@@ -15,6 +15,5 @@ void Bot::DoMove() {
   // Using strategy to generate move
   Move next_move = this->strategy_->GenerateMove();
   board_->SetCell(next_move.x, next_move.y, kBot);
-
   
 }

@@ -10,7 +10,9 @@ namespace botstrategies {
 class MinimaxStrategy : public IStrategy {
   public:
     MinimaxStrategy(Board* board, VictoryChecker* victory_checker);
-    virtual Move GenerateMove() override;
+    Move GenerateMove() override;
+    ~MinimaxStrategy();
+    
   private:
     Board *board_;
     VictoryChecker* victory_checker_;
