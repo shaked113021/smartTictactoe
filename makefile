@@ -1,6 +1,6 @@
 CFLAGS = `pkg-config --cflags gtk+-3.0` -O0 -Wall -Wextra -I src/include
 LIBS = `pkg-config --libs gtk+-3.0` -export-dynamic
-SRC = src/cpp/Main.cpp src/cpp/tictactoe/Board.cpp src/cpp/tictactoe/Bot.cpp src/cpp/Window1.cpp src/cpp/findpath.cpp src/cpp/tictactoe/VictoryChecker.cpp
+SRC = src/cpp/Main.cpp src/cpp/tictactoe/Board.cpp src/cpp/tictactoe/Bot.cpp src/cpp/Window1.cpp src/cpp/findpath.cpp src/cpp/tictactoe/VictoryChecker.cpp src/cpp/tictactoe/botstrategies/RandomStrategy.cpp src/cpp/tictactoe/botstrategies/MinimaxStrategy.cpp
 OBJ = $(SRC:.cpp = .o)
 CC = g++
 
