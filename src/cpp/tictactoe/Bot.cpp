@@ -9,7 +9,7 @@ using namespace tictactoe;
 using namespace botstrategies;
 
 // getting board and victory checker in constractor
-Bot::Bot(Board* t_board, IStrategy* t_strategy) : m_board(t_board), m_strategy(t_strategy) {}
+Bot::Bot(const Board* t_board, const IStrategy* t_strategy) : m_board((Board*)t_board), m_strategy((IStrategy*)t_strategy) {}
 
 void Bot::DoMove() const
 {

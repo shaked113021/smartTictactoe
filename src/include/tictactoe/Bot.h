@@ -8,7 +8,8 @@ namespace tictactoe
 class Bot
 {
   public:
-    Bot(Board* t_board, botstrategies::IStrategy* t_strategy);
+    Bot(const Bot&) = delete;
+    Bot(const Board* t_board, const botstrategies::IStrategy* t_strategy);
     void DoMove() const;
   private:
     Board* m_board;

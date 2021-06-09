@@ -8,7 +8,7 @@ struct Move
   int y;
   int score;
 
-  Move(int t_x, int t_y);
-  Move(int t_score);
+  Move(const int t_x, const int t_y);
+  Move(const int t_score);
 };
 }

@@ -42,6 +42,7 @@ class Window1
     void BotTurn();
     void NewGame();
   public:
+    Window1(const Window1&) = delete;
     Window1(int argc, char** argv);
     void GridButtonListener(GtkWidget* t_button);
     void ActivateWindow();

@@ -4,7 +4,7 @@
 using namespace tictactoe;
 using namespace tictactoe::botstrategies;
 
-RandomMoveStrategy::RandomMoveStrategy(Board *t_board) : m_board(t_board) {}
+RandomMoveStrategy::RandomMoveStrategy(const Board *t_board) : m_board((Board*)t_board) {}
 
 RandomMoveStrategy::~RandomMoveStrategy() {}
 

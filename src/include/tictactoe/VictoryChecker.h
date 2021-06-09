@@ -6,7 +6,8 @@ namespace tictactoe
 class VictoryChecker
 {
   public:
-    VictoryChecker(Board* t_board);
+    VictoryChecker(const VictoryChecker&) = delete;
+    VictoryChecker(const Board* t_board);
     int Check();
   private:
     Board* m_board;

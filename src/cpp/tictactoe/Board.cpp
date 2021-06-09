@@ -4,22 +4,22 @@
 
 using namespace tictactoe;
 
-int Board::GetCell(int t_x, int t_y) const
+int Board::GetCell(const int t_x, const int t_y) const
 {
   return m_game_board[t_y][t_x];
 }
 
-void Board::SetCell(int t_x, int t_y, int t_player)
+void Board::SetCell(const int t_x, const int t_y, const int t_player)
 {
   m_game_board[t_y][t_x] = t_player;
 }
 
-void Board::SetUserChar(char t_user_char)
+void Board::SetUserChar(const char t_user_char)
 {
   m_user_char = t_user_char;
 }
 
-void Board::SetBotChar(char t_bot_char)
+void Board::SetBotChar(const char t_bot_char)
 {
   m_bot_char = t_bot_char;
 }

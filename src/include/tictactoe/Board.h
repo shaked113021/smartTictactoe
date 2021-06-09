@@ -12,10 +12,10 @@ namespace tictactoe
 class Board
 {
   public:
-    int GetCell(int t_x, int t_y) const;
-    void SetCell(int t_x, int t_y, int t_player);
-    void SetUserChar(char t_user_char);
-    void SetBotChar(char t_bot_char);
+    int GetCell(const int t_x, const int t_y) const;
+    void SetCell(const int t_x, const int t_y, const int t_player);
+    void SetUserChar(const char t_user_char);
+    void SetBotChar(const char t_bot_char);
     char GetUserChar() const;
     char GetBotChar() const;
     void Reset();

@@ -8,7 +8,8 @@ namespace botstrategies {
 
 class RandomMoveStrategy : public IStrategy {
   public:
-    RandomMoveStrategy(Board* t_board);
+    RandomMoveStrategy(const RandomMoveStrategy&) = delete;
+    RandomMoveStrategy(const Board* t_board);
     Move GenerateMove() override;
     ~RandomMoveStrategy();
 

@@ -1,7 +1,7 @@
 #include "tictactoe/VictoryChecker.h"
 
 using namespace tictactoe;
-VictoryChecker::VictoryChecker(Board* t_board) : m_board(t_board) {}
+VictoryChecker::VictoryChecker(const Board* t_board) : m_board((Board*)t_board) {}
 
 int VictoryChecker::CheckDiagonals()
 {

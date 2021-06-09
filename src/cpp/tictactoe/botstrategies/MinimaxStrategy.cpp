@@ -7,7 +7,7 @@
 using namespace tictactoe;
 using namespace tictactoe::botstrategies;
 
-MinimaxStrategy::MinimaxStrategy(Board* t_board, VictoryChecker* t_victory_checker) : m_board(t_board), m_victory_checker(t_victory_checker) {}
+MinimaxStrategy::MinimaxStrategy(const Board* t_board, const VictoryChecker* t_victory_checker) : m_board((Board*)t_board), m_victory_checker((VictoryChecker*)t_victory_checker) {}
 
 MinimaxStrategy::~MinimaxStrategy() {}
 

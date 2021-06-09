@@ -12,7 +12,8 @@ namespace botstrategies
 class MinimaxStrategy : public IStrategy
 {
   public:
-    MinimaxStrategy(Board* t_board, VictoryChecker* t_victory_checker);
+    MinimaxStrategy(const MinimaxStrategy& other) = delete;
+    MinimaxStrategy(const Board* t_board, const VictoryChecker* t_victory_checker);
     Move GenerateMove() override;
     ~MinimaxStrategy();
     
